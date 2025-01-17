@@ -95,7 +95,6 @@ indicadores_mb.layout = html.Div([
         style={'width': '750px', 'height': '300px'}
     )
 ])
-
 @indicadores_mb.callback(
     [Output('mesofilicos-graf', 'figure'),
      Output('coliformes-10-graf', 'figure'),
@@ -103,7 +102,6 @@ indicadores_mb.layout = html.Div([
     [Input('interval-component', 'n_intervals'),
      Input('producto-filter', 'value')]
 )
-
 def graficos(n_intervals, producto_filter):
     # Filtrar los productos seleccionados
     if producto_filter:
@@ -137,7 +135,7 @@ def graficos(n_intervals, producto_filter):
         )
         mesofilicos_fig.add_trace(
             go.Scatter(
-                x=['2024-01-01', '2024-12-31'],
+                x=['2025-01-01', '2025-12-31'],
                 y=[10000, 10000],
                 mode='lines',
                 name="Límite 10,000 UFC/g",
@@ -151,6 +149,8 @@ def graficos(n_intervals, producto_filter):
         xaxis_title='Fecha',
         yaxis_title='Mesofílicos (UFC/g)',
         template='plotly_dark',
+        xaxis=dict(title="Fecha", showgrid=True, autorange=True),
+        yaxis=dict(title="Mesofílicos (UFC/g)", showgrid=True, autorange=True),
         showlegend=False
     )
 
@@ -178,7 +178,7 @@ def graficos(n_intervals, producto_filter):
         )
         coliformes_10_fig.add_trace(
             go.Scatter(
-                x=['2024-01-01', '2024-12-31'],     
+                x=['2025-01-01', '2025-12-31'],
                 y=[10, 10],
                 mode='lines',
                 name='Límite 10 UFC/g',
@@ -192,6 +192,8 @@ def graficos(n_intervals, producto_filter):
         xaxis_title='Fecha',
         yaxis_title='Coliformes (<10 UFC/g)',
         template='plotly_dark',
+        xaxis=dict(title="Fecha", showgrid=True, autorange=True),
+        yaxis=dict(title="Coliformes (<10 UFC/g)", showgrid=True, autorange=True),
         showlegend=False
     )
 
@@ -219,7 +221,7 @@ def graficos(n_intervals, producto_filter):
         )
     coliformes_5_fig.add_trace(
         go.Scatter(
-            x=['2024-01-01', '2024-12-31'],
+            x=['2025-01-01', '2025-12-31'],
             y=[5000, 5000],
             mode='lines',
             name='Límite 5000 UFC/g',
@@ -233,13 +235,15 @@ def graficos(n_intervals, producto_filter):
         xaxis_title='Fecha',
         yaxis_title='Coliformes (<5,000 UFC/g)',
         template='plotly_dark',
+        xaxis=dict(title="Fecha", showgrid=True, autorange=True),
+        yaxis=dict(title="Coliformes (<5,000 UFC/g)", showgrid=True, autorange=True),
         showlegend=False
     )
 
     # Actualizar rangos de fechas en los ejes X
-    mesofilicos_fig.update_xaxes(range=['2024-01-01', '2024-12-31'])
-    coliformes_10_fig.update_xaxes(range=['2024-01-01', '2024-12-31'])
-    coliformes_5_fig.update_xaxes(range=['2024-01-01', '2024-12-31']) 
+    mesofilicos_fig.update_xaxes(range=['2025-01-01', '2025-12-31'])
+    coliformes_10_fig.update_xaxes(range=['2025-01-01', '2025-12-31'])
+    coliformes_5_fig.update_xaxes(range=['2025-01-01', '2025-12-31']) 
     
     return mesofilicos_fig, coliformes_10_fig, coliformes_5_fig
 

@@ -4,7 +4,6 @@ import warnings
 
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=FutureWarning)
-ruta_bpm_local="Excel/Bitacora de BPM's 2025.xlsx"
 ##### LIBERACIÓN de PT ######   regresa DF "dfs"
 dfs = []
 sheets = {"CHICHARRÓN PRENSADO": "A,C:F,L:Q,S,T,X:AF",
@@ -21,23 +20,22 @@ for sheet_name, usecols in sheets.items():
     try:
         dfs.append(
             pd.read_excel(
-                # "//192.168.10.2/Compartidos/Calidad Compartida (192.168.10.254)/8. BITACORA DE LIBERACIÓN DE PT Y MP/BITACORAS 2024/D-FTO-ACI-083 Bitácora de liberación de PT 2024 ORIGINAL.xlsx",  #remoto
-                "Excel/Bitácora de liberación de PT.xlsx",   #Local
+                "//192.168.10.2/Compartidos/Calidad Compartida (192.168.10.254)/8. BITACORA DE LIBERACIÓN DE PT Y MP/D-FTO-ACI-083 Bitácora de liberación de PT 2025.xlsx",  #remoto
+                # "Excel/Bitácora de liberación de PT.xlsx",   #Local
                 keep_default_na=True,
                 sheet_name=sheet_name,
-                # skiprows=8,   #remoto, quitar para local.
+                skiprows=8,   #remoto, quitar para local.
                 usecols=usecols
                 )
             )
-    except Exception as e:
-        # print(f"Error al procesar la hoja {sheet_name} para indicadores de microbiología: {e}")
-        continue
-        
-#### BPM's OPERATIVAS #####   regresa DF "bpm_operativo_df"
 
+    except Exception as e:
+        continue
+
+#### BPM's OPERATIVAS #####   regresa DF "bpm_operativo_df"
 bpm_operativo = []
 fechas = []
-ruta_bpm_local="Excel/Bitacora de BPM's 2025.xlsx"
+ruta_bpm_local="Excel/Bitacora de BPM's 2024.xlsx"
 sheets = {
     "ENERO": "A:J",
     "FEBRERO": "A:J",
@@ -52,7 +50,6 @@ sheets = {
     "NOVIEMBRE": "A:K",
     "DICIEMBRE": "A:K"
 }
-
 for sheet, usecols in sheets.items():
     try:
         temp_df = pd.read_excel(
@@ -61,7 +58,7 @@ for sheet, usecols in sheets.items():
             sheet_name=sheet,
             usecols=usecols,
             skiprows=[0, 2],
-            nrows=17
+            nrows=18
         )
         fechas.extend(temp_df.columns[1:])
     except Exception as e:
@@ -83,7 +80,6 @@ else:
 #### BPM's PERSONAL ######   regresa DF "bpm_personal_df"
 bpm_personal = []
 personal_df_list = []
-
 for sheet, usecol in sheets.items():
     try:
         temp_df = pd.read_excel(

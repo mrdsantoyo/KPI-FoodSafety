@@ -47,8 +47,6 @@ liberaciones.layout = html.Div(
         )
     ]
 )
-
-# Callback para actualizar el gráfico
 @liberaciones.callback(
     Output('liberaciones-graf', 'figure'),
     [Input('producto-filter-liberaciones', 'value'),

@@ -50,7 +50,6 @@ for sheet_name, usecols in sheets.items():
     )
     df['Departamento'] = sheet_name
     df1.append(df)
-
 df1 = pd.concat(df1)
 df1.rename(
     columns={x: x.replace('(A)', '').strip().capitalize() for x in df1.columns},
@@ -65,25 +64,13 @@ df1['Publicado'] = df1['Publicado'].combine_first(df1['Publicado'])
 dfs = df1[['Departamento', 'Publicado', 'En flujo', 'Ausencia', 'Vigencia v.', 'Rechazados']]
 dfs['Departamento'] = dfs['Departamento'].str.replace(r'(A)', '').str.strip()
 
-##################
-# dfs.rename(
-#     columns={
-#         'en flujo': 'En Flujo',
-#         'ausencia': 'Ausencia',
-#         'vigencia v.': 'Vigencia V.',
-#         'rechazados': 'Rechazados'
-#         },
-#     inplace=True
-#     )
-
-# Crear la aplicación Dash
 documentos = Dash(__name__)
 
 documentos.layout = html.Div(
     children=[
         dcc.Dropdown(
             id='filtro-departamento',
-            options=[{'label': i, 'value': i} for i in dfs['Departamento'].unique()],
+            options=[{'label': i.upper(), 'value': i.upper()} for i in dfs['Departamento'].unique()],
             value=[],
             multi=True,
             placeholder="Selecciona un departamento",
@@ -100,12 +87,10 @@ documentos.layout = html.Div(
         )
     ]
 )
-
 @documentos.callback(
     Output('control-documentos', 'figure'),
     Input('filtro-departamento', 'value')
 )
-
 def update_graph(filtro_departamento):
     # Filtrar los datos por departamento si hay filtro seleccionado
     if filtro_departamento:
