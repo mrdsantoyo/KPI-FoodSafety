@@ -49,9 +49,11 @@ liberaciones.layout = html.Div(
 )
 @liberaciones.callback(
     Output('liberaciones-graf', 'figure'),
-    [Input('producto-filter-liberaciones', 'value'),
-     Input('interval-component-liberaciones', 'n_intervals')]
-)
+    [
+        Input('producto-filter-liberaciones', 'value'),
+        Input('interval-component-liberaciones', 'n_intervals')
+        ]
+    )
 def actualizar_grafico_liberaciones(producto_filter, intervalo):
     # Asegurar que producto_filter sea una lista
     if producto_filter is None:
@@ -67,15 +69,17 @@ def actualizar_grafico_liberaciones(producto_filter, intervalo):
     df_agrupado['Porcentaje'] = (df_agrupado['Conteo'] / total_registros) * 100
 
     # Crear el gráfico de pastel
-    pt_estatus = go.Figure(data=[
-        go.Pie(
-            labels=df_agrupado['Estatus del producto (Liberado, Retenido, Rechazado)'],
-            values=df_agrupado['Porcentaje'],
-            textinfo='label+percent',
-            insidetextorientation='radial',
-            pull=0.05,
+    pt_estatus = go.Figure(
+        data=[
+            go.Pie(
+                labels=df_agrupado['Estatus del producto (Liberado, Retenido, Rechazado)'],
+                values=df_agrupado['Porcentaje'],
+                textinfo='label+percent',
+                insidetextorientation='radial',
+                pull=0.05,
+                hoverinfo='label+percent')
+            ]
         )
-    ])
 
     pt_estatus.update_layout(
         title='Porcentaje de Liberación por Estatus',
@@ -85,7 +89,5 @@ def actualizar_grafico_liberaciones(producto_filter, intervalo):
 
     return pt_estatus
 
-
-# Ejecutar la aplicación
 if __name__ == '__main__':
     liberaciones.run(debug=True)

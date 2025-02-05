@@ -41,8 +41,8 @@ sheets = {
 
 for sheet_name, usecols in sheets.items():
     df = pd.read_excel(
-        # 'C:/Users/daniel.santoyo/KPI-EDA/Control de actualización de vigencia por documento D.xlsm',
-        "//192.168.10.2/Compartidos/SGI/Documentación/INDICADORES DE RECARGA/Control de actualización de vigencia por documento D.xlsm",
+        'C:/Users/daniel.santoyo/KPI-EDA/Excel/Control de actualización de vigencia por documento D.xlsm',
+        # "//192.168.10.2/Compartidos/SGI/Documentación/INDICADORES DE RECARGA/Control de actualización de vigencia por documento D.xlsm",
         sheet_name=sheet_name,
         usecols=usecols,
         skiprows=2,
@@ -75,8 +75,8 @@ documentos.layout = html.Div(
             multi=True,
             placeholder="Selecciona un departamento",
             style={'width': '500px',
-                   'backgroundColor': '#2A2A2A'
-                   }
+                'backgroundColor': '#2A2A2A'
+                }
         ),
         dcc.Graph(
             id='control-documentos',

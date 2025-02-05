@@ -1,5 +1,8 @@
+__pycache_/_
+venv/
+**/*.pyc
 **/KPI-EDA.rar
 *.xlsx
 *.xlsm
 *.ipynb
-
+*.txt
