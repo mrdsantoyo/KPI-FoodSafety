@@ -1,20 +1,8 @@
 import pandas as pd
 import plotly.graph_objects as go
 from dash import Dash, dcc, html, Input, Output
+from load_mtto import df
 
-# Cargar el archivo Excel
-df = pd.read_excel(
-    # r"/Excel/KPI'S.xlsx"  # LOCAL
-    r"//192.168.10.2/Compartidos/Mantenimiento (192.168.10.254)/KPI'S.xlsx" #REMOTO
-)
-
-df.columns = df.columns.str.strip() 
-df['TIEMPO_RAW'] = pd.to_timedelta(df['TIEMPO'].astype(str), errors='coerce')
-df['TIEMPO_RAW'] = df['TIEMPO_RAW'].fillna(pd.Timedelta(seconds=0))
-df['TIEMPO'] = df['TIEMPO_RAW'].apply(lambda x: f"{int(x.total_seconds() // 3600):02}:{int((x.total_seconds() % 3600) // 60):02}")
-df['FECHA'] = pd.to_datetime(df['FECHA'], errors='coerce')
-
-# Crear la aplicación Dash
 mtto = Dash()
 mtto.layout = html.Div(
     children=[
@@ -48,7 +36,6 @@ mtto.layout = html.Div(
         )
     ]
 )
-
 @mtto.callback(
     Output('realizados', 'figure'),
     [
@@ -67,7 +54,6 @@ def update_graphs(filtro_equipo, filtro_tecnico):
     # Contar los valores de ESTATUS
     estatus_counts = df_filtrado['ESTATUS'].value_counts()
 
-    # Crear el gráfico de pastel
     graf_realizados = go.Figure(
         data=[
             go.Pie(
