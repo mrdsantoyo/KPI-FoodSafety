@@ -50,7 +50,8 @@ python dash_calidad.py
 ```
 Luego abre en tu navegador:
 ```
-http://127.0.0.1:8051
+http://127.0.0.1:1111 #Para el Dashboard de Mantenimiento
+http://127.0.0.1:1112 #Para el Dashboard de Aseguramiento de Calidad 
 ```
 1. Haz un **fork** del repositorio.
 2. Crea una rama para tu mejora o corrección (`git checkout -b feature/nueva-mejora`).
