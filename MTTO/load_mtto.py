@@ -9,7 +9,8 @@ for sheet_name, usecols in sheets.items():
 	try:
 		dfs.append(
 			pd.read_excel(
-			r"//192.168.10.2/Compartidos/Mantenimiento (192.168.10.254)/KPI'S.xlsx",
+			workbook = r"C:/Users/daniel.santoyo/KPI-EDA/Excel/KPI'S.xlsx",
+			# workbook = r"//192.168.10.2/Compartidos/Mantenimiento (192.168.10.254)/KPI'S.xlsx",
 				keep_default_na=True,
 				sheet_name=sheet_name,
 				usecols=usecols,

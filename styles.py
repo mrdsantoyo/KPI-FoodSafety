@@ -16,21 +16,21 @@ GRAF_750x300 = {
     'backgroundColor': '#2b2b2b',
     'fontFamily': 'Arial, sans-serif'
 }
-DROPDOWN_300 = {
-    'width': '300px',
-    'backgroundColor': '#2b2b2b',
-    'fontFamily': 'Arial, sans-serif'
-}
-DROPDOWN_500 = {
-    'width': '500px',
-    'backgroundColor': '#2b2b2b',
-    'fontFamily': 'Arial, sans-serif'
-}
-DROPDOWN_750 = {
-    'width': '750px',
-    'backgroundColor': '#2b2b2b',
-    'fontFamily': 'Arial, sans-serif'
-}
+# DROPDOWN_300 = {
+#     'width': '300px',
+#     'backgroundColor': '#2b2b2b',
+#     'fontFamily': 'Arial, sans-serif'
+# }
+# DROPDOWN_500 = {
+#     'width': '500px',
+#     'backgroundColor': '#2b2b2b',
+#     'fontFamily': 'Arial, sans-serif'
+# }
+# DROPDOWN_750 = {
+#     'width': '750px',
+#     'backgroundColor': '#2b2b2b',
+#     'fontFamily': 'Arial, sans-serif'
+# }
 DROPDOWN_100 = {
     'width': '100%',
     'backgroundColor': '#2b2b2b',

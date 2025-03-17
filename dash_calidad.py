@@ -1,18 +1,177 @@
 import pandas as pd
-import plotly.graph_objects as go
 from dash import Dash, dcc, html, Input, Output
+import styles
+from ACI.load_aci import bpm_operativo_df, bpm_personales_df
+from ACI.BPM import bpmoperativas, bpmpersonales, filtro_area
+from ACI.mb_indicadores import actualizar_grafico_indicadores, filtro
+
 import warnings
 warnings.filterwarnings('ignore')
-from ACI.load_aci import bpm_operativo_df, bpm_personal_df
 
+import sys
+sys.path.append('..')
 
-filtro_area = [col for col in bpm_operativo_df.columns if col not in ['FECHA', 'PROMEDIOS DIARIOS']]
+start_date = pd.to_datetime(bpm_operativo_df.index.min(), errors='coerce')
+end_date = pd.to_datetime(bpm_operativo_df.index.max(), errors='coerce')
 
+start_date = start_date.strftime('%Y-%m-%d') if pd.notna(start_date) else '2023-01-01'
+end_date = end_date.strftime('%Y-%m-%d') if pd.notna(end_date) else pd.Timestamp.today().strftime('%Y-%m-%d')
 
-print(filtro_area)
-# def actualizar_graficos(filtro_area, start_date, end_date):
-#     return bpmoperativas(filtro_area, start_date, end_date), bpmpersonales(filtro_area, start_date, end_date)
+calidad_dash = Dash(__name__)
 
-# if __name__ == "__main__":
-#     bpms.run(debug=True, port=8052)
+calidad_dash.layout = html.Div(
+    children=[
+        html.Header(id='header',
+            children=[
+                html.Img(id='Dilusa logo',
+                    src="/assets/Dilusa byn.png",
+                    alt="Dilusa Logo",
+                    style={
+                        'height': '100px',
+                        'backgroundColor' : '#2b2b2b',
+                        }
+                    ),
+                html.H1(id='header1', 
+                    children="KPI's Aseguramiento de Calidad e Inocuidad", 
+                    className='', 
+                    style = {
+                        'alignItems':'center',
+                        "justifyContent": "space-around",
+                        'display':'flex',
+                        'color':'white',
+                        **styles.GRL
+                        }
+                    )
+                ],
+            style={
+                'backgroundColor': '#2b2b2b',
+                'height':'110px',
+                'display':'flex',
+                "alignItems": "center",
+            }
+            ),
+        html.Div(id='filtros',
+            children=[
+                dcc.Dropdown(id='filtro_area',
+                    options=[{"label": area, "value": area} for area in filtro_area],
+                    value=[],
+                    placeholder='Selecciona un área',
+                    multi=True,
+                    style=styles.DROPDOWN_100
+                ),
+                dcc.Dropdown(id='filtro_producto',
+                    options=filtro,
+                    value=[],
+                    placeholder='Selecciona un producto',
+                    multi=True,
+                    style=styles.DROPDOWN_100
+                ),
+                dcc.DatePickerRange(id='filtro_fecha',
+                    start_date=start_date,
+                    end_date=end_date,
+                    display_format='DD/MM/YYYY',
+                    min_date_allowed='2023-01-01',
+                    style=styles.DROPDOWN_100
+                    )
+                ]
+            ),
+        html.Div(id='indicadores_mb',
+            children=[
+                dcc.Graph(id='mesofilicos',
+                    style={
+                        'width': '50%',
+                        'height': '300px',  
+                        **styles.GRL
+                    }
+                ),
+                dcc.Graph(id='coliformes_10',
+                    style={
+                        'width': '50%',
+                        'height': '300px',  
+                        **styles.GRL
+                    }
+                ),
+                dcc.Graph(id='coliformes_5',
+                    style={
+                        'width': '50%',
+                        'height': '300px',  
+                        **styles.GRL
+                    }
+                )
+            ],
+            style={
+                'display': 'flex',
+                "flexDirection": "column",
+                "alignItems": "left",
+                "flexWrap": "wrap",
+                **styles.GRL
+            }
+        ),
+        html.Div(id='bpms',
+            children=[
+                dcc.Graph(id='operativas_graf',
+                    style={
+                        'width': '50%',
+                        'height': '300px',  
+                        **styles.GRL
+                        }
+                    ),
+                dcc.Graph(id='personales_graf',
+                    style={
+                        'width': '50%',
+                        'height': '300px',  
+                        **styles.GRL
+                        }
+                    )
+                ],
+            style={
+                'display': 'flex',
+                "flexDirection": "row",
+                "alignItems": "center",
+                "flexWrap": "wrap",
+                **styles.GRL
+                }
+            )
+        ],
+        style=styles.GRL
+)
+
+@calidad_dash.callback(
+    [
+        Output('operativas_graf', 'figure'),
+        Output('personales_graf', 'figure')
+    ],
+    [
+        Input('filtro_area', 'value'),
+        Input('filtro_fecha', 'start_date'),
+        Input('filtro_fecha', 'end_date')
+    ]
+)
+def actualizar_graficos(filtro_area, start_date, end_date):
+    print(f"Filtrando datos desde {start_date} hasta {end_date} para área {filtro_area}")  # Debug
+
+    operativas = bpmoperativas(filtro_area, start_date, end_date)
+    personales = bpmpersonales(filtro_area, start_date, end_date)
+
+    if operativas is None or personales is None:
+        print("❌ Error: No hay datos para mostrar.")
+
+    return operativas, personales
+
+@calidad_dash.callback(
+    [
+        Output('mesofilicos', 'figure'),
+        Output('coliformes_10', 'figure'),
+        Output('coliformes_5', 'figure')
+        ],
+    [
+        Input('filtro_producto', 'value')
+    ]
+)
+def actualizar_graficos1(filtro_producto):
+    fig_mesofilicos, fig_coliformes_10, fig_coliformes_5 = actualizar_grafico_indicadores(filtro_producto)
+    return fig_mesofilicos, fig_coliformes_10, fig_coliformes_5
+
+if __name__ == '__main__':
+    calidad_dash.run(debug=True, port='1111')
 

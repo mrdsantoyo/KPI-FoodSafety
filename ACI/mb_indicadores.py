@@ -87,7 +87,7 @@ indicadores_mb.layout = html.Div(
         Input('producto-filter', 'value')
     ]
 )
-def graficos(filtro_producto):
+def actualizar_grafico_indicadores(filtro_producto):
     fig_mesofilicos, fig_coliformes_10, fig_coliformes_5 = go.Figure(), go.Figure(), go.Figure()
     
     if not filtro_producto:
@@ -161,21 +161,21 @@ def graficos(filtro_producto):
         xaxis_title='Fecha', 
         yaxis_title='UFC/g', 
         template='plotly_dark', 
-        showlegend=False
+        showlegend=True
     )
     fig_coliformes_10.update_layout(
         title='Coliformes (<10 UFC/g)', 
         xaxis_title='Fecha', 
         yaxis_title='UFC/g', 
         template='plotly_dark', 
-        showlegend=False
+        showlegend=True
     )
     fig_coliformes_5.update_layout(
         title="Coliformes (<5'000 UFC/g)", 
         xaxis_title='Fecha', 
         yaxis_title='UFC/g', 
         template='plotly_dark', 
-        showlegend=False
+        showlegend=True
     )
     return fig_mesofilicos, fig_coliformes_10, fig_coliformes_5
 

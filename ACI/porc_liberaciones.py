@@ -7,6 +7,36 @@ from ACI.load_aci import dfs
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=FutureWarning)
 
+######
+# dfs = []
+# sheets = {
+#     "CHICHARRÓN PRENSADO": "A,C:F,L:Q,S,T,X:AF",
+#     "PELLET": "A,C:F,L:Q,S,T,X:AJ",
+#     "PORCIONADOS": "A,C:E,K:O,Q,R,V:AA",
+#     "EMBUTIDOS": "A,C:E,K:Q,S,T,X:AB",
+#     "MANTECA": "A,C:E,J:Q,S,T,X:AF",
+#     "AHUMADOS": "A,C:F,L,N:Q,S,T,X:AC",
+#     "CARNE PARA HAMBURGUESA Y MOLIDA": "A,C:E,K:O,Q,R,V:Z",
+#     "ARRACHERA": "A,C:E,K:P,R,S,W:AB",
+#     "COCIDOS Y ESTERILIZADOS": "A,C:D,F,G,M:Q,S,T,X:AE"
+# }
+
+# for sheet_name, usecols in sheets.items():
+    # try:
+    #     df = pd.read_excel(
+    #         "//192.168.10.2/Compartidos/Calidad Compartida (192.168.10.254)/8. BITACORA DE LIBERACIÓN DE PT Y MP/D-FTO-ACI-083 Bitácora de liberación de PT 2025.xlsx",
+    #         sheet_name=sheet_name,
+    #         skiprows=8,
+    #         usecols=usecols
+    #     )
+    #     dfs.append(df)
+    # except Exception as e:
+    #     print(f"Error cargando {sheet_name}: {e}")
+######
+
+
+
+
 df_liberaciones = pd.concat(dfs, ignore_index=True)
 
 df_liberaciones.columns = df_liberaciones.columns.str.strip().str.replace('\n', ' ')
@@ -54,10 +84,10 @@ liberaciones.layout = html.Div(
         Input('interval-component-liberaciones', 'n_intervals')
         ]
     )
-def actualizar_grafico_liberaciones(filtro_producto, intervalo):
+def actualizar_grafico_liberaciones(filtro_producto):
     # Asegurar que filtro_producto sea una lista
     if filtro_producto is None:
-        df_filtrado = df_liberaciones  # Mostrar todos los datos si no hay selección
+        df_filtrado = df_liberaciones['Producto'].all()  # Mostrar todos los datos si no hay selección
     elif isinstance(filtro_producto, str):
         df_filtrado = df_liberaciones[df_liberaciones['Producto'] == filtro_producto]
     else:

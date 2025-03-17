@@ -1,8 +1,8 @@
 import pandas as pd
 import plotly.graph_objects as go
 from dash import Dash, html, dcc, Input, Output, dash_table
-import eficiencia_mtto, porc_mtto
-from porc_mtto import df
+from MTTO import eficiencia_mtto, porc_mtto
+from MTTO.porc_mtto import df
 import warnings
 warnings.filterwarnings('ignore')
 import sys
@@ -16,13 +16,32 @@ mantenimiento_dash.layout = html.Div(
         html.Header(id='header', 
             className='', 
             children=[
-                html.Img(id='', 
+                html.Img(id='Dilusa logo',
+                    src="/assets/Dilusa byn.png",
+                    alt="Dilusa Logo",
+                    style={
+                        'height': '100px',
+                        'backgroundColor' : '#2b2b2b',
+                        }
+                    ),
+                html.H1(id='header1', 
+                    children="KPI's Mantenimiento", 
                     className='', 
-                    children=[],
-                    src="/Img/Dilusa byn.jpg", 
-                    alt="Dilusa Logo"
+                    style = {
+                        'alignItems':'center',
+                        "justifyContent": "space-around",
+                        'display':'flex',
+                        'color':'white',
+                        **styles.GRL
+                        }
                     )
-                ]
+                ],
+            style={
+                'backgroundColor': '#2b2b2b',
+                'height':'110px',
+                'display':'flex',
+                "alignItems": "center",
+            }
         ),
         html.Div(id='filtros', 
             className='', 
@@ -130,6 +149,7 @@ mantenimiento_dash.layout = html.Div(
         ],
     style=styles.GRL
     )
+
 @mantenimiento_dash.callback(
     [
         Output('realizados', 'figure')
