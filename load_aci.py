@@ -16,14 +16,15 @@ sheets = {"CHICHARRÓN PRENSADO": "A,C:F,L:Q,S,T,X:AF",
 		"ARRACHERA": "A,C:E,K:P,R,S,W:AB",
 		"COCIDOS Y ESTERILIZADOS": "A,C:D,F,G,M:Q,S,T,X:AE"}
 for sheet_name, usecols in sheets.items():
+	# workbook = r"//192.168.10.2/Compartidos/Calidad Compartida (192.168.10.254)/8. BITACORA DE LIBERACIÓN DE PT Y MP/D-FTO-ACI-083 Bitácora de liberación de PT 2025.xlsx"
+	workbook = "C:/Users/daniel.santoyo/KPI-EDA/Excel/D-FTO-ACI-083 Bitácora de liberación de PT 2025.xlsx"
 	try:
 		dfs.append(
 			pd.read_excel(
-				"//192.168.10.2/Compartidos/Calidad Compartida (192.168.10.254)/8. BITACORA DE LIBERACIÓN DE PT Y MP/D-FTO-ACI-083 Bitácora de liberación de PT 2025.xlsx",  #remoto
-				# "Excel/Bitácora de liberación de PT.xlsx",   #Local
+				io=workbook,  
 				keep_default_na=True,
 				sheet_name=sheet_name,
-				skiprows=8,   #remoto, quitar para local.
+				skiprows=8,  
 				usecols=usecols
 				)
 			)
@@ -34,7 +35,6 @@ for sheet_name, usecols in sheets.items():
 #### BPM's OPERATIVAS #####   regresa DF "bpm_operativo_df"
 bpm_operativo = []
 fechas = []
-ruta_bpm_local="Excel/Bitacora de BPM's 2024.xlsx"
 sheets = {
 	"ENERO": "A:J",
 	"FEBRERO": "A:J",
@@ -50,10 +50,11 @@ sheets = {
 	"DICIEMBRE": "A:K"
 }
 for sheet, usecols in sheets.items():
+	workbook = r"Excel/BPM'S 2025.xlsx"
+	workbook = r"Excel/BPM'S 2025.xlsx"
 	try:
 		temp_df = pd.read_excel(
-			r"//192.168.10.2/Compartidos/Calidad Compartida (192.168.10.254)/5. KPI´s calidad/2025/Bitacora de BPM'S 2025.xlsx",
-			# ruta_bpm_local,  #Local
+			io=workbook,
 			sheet_name=sheet,
 			usecols=usecols,
 			skiprows=[0, 2],
@@ -82,8 +83,7 @@ personal_df_list = []
 for sheet, usecol in sheets.items():
 	try:
 		temp_df = pd.read_excel(
-			r"//192.168.10.2/Compartidos/Calidad Compartida (192.168.10.254)/5. KPI´s calidad/2025/Bitacora de BPM'S 2025.xlsx",
-			# ruta_bpm_local,  # Ruta local
+			io=workbook,
 			sheet_name=sheet,
 			usecols=usecol,
 			skiprows=list(range(24))  # Saltar filas irrelevantes

@@ -1,6 +1,7 @@
 __pycache__/
 # Img/
 venv/
+Excel/
 **/*.pyc
 **/KPI-EDA.rar
 *.xlsx

@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from dash import Dash, html, dcc, Input, Output, dash_table
 from MTTO import eficiencia_mtto, porc_mtto
-from MTTO.porc_mtto import df
+from MTTO.porc_mtto import df1
 import warnings
 warnings.filterwarnings('ignore')
 import sys
@@ -16,9 +16,9 @@ mantenimiento_dash.layout = html.Div(
         html.Header(id='header', 
             className='', 
             children=[
-                html.Img(id='Dilusa logo',
-                    src="/assets/Dilusa byn.png",
-                    alt="Dilusa Logo",
+                html.Img(id='Logo',
+                    src="/assets/Logo byn.png",
+                    alt="Logo",
                     style={
                         'height': '100px',
                         'backgroundColor' : '#2b2b2b',
@@ -48,7 +48,7 @@ mantenimiento_dash.layout = html.Div(
             children=[#FILTROS 
                 dcc.Dropdown(id='filtro_equipo', 
                     className='',
-                    options = [{'label': x.upper(), 'value': x.upper()} for x in df['EQUIPO'].dropna().unique()],
+                    options = [{'label': x.upper(), 'value': x.upper()} for x in df1['EQUIPO'].dropna().unique()],
                     value='',
                     multi=True,
                     placeholder='Selecciona un equipo.',
@@ -56,7 +56,7 @@ mantenimiento_dash.layout = html.Div(
                 ),
                 dcc.Dropdown(id='filtro_tecnico', 
                     className='',
-                    options = [{'label': x.upper(), 'value': x.upper()} for x in df['TÉCNICO'].dropna().unique()],
+                    options = [{'label': x.upper(), 'value': x.upper()} for x in df1['TÉCNICO'].dropna().unique()],
                     value='',
                     multi=True,
                     placeholder='Selecciona un técnico.',
@@ -64,7 +64,7 @@ mantenimiento_dash.layout = html.Div(
                 ),
                 dcc.Dropdown(id='filtro_area', 
                     className='',
-                    options = [{'label': x.upper(), 'value': x.upper()} for x in df['ÁREA'].dropna().unique()],
+                    options = [{'label': x.upper(), 'value': x.upper()} for x in df1['ÁREA'].dropna().unique()],
                     value='',
                     multi=True,
                     placeholder='Selecciona un área.',
@@ -82,8 +82,8 @@ mantenimiento_dash.layout = html.Div(
                     style = styles.GRAF_500x500
                 ),
                 dash_table.DataTable(id='tabla-mttos',
-                    columns = [{"name": col, "id": col} for col in df.columns if col in ['FECHA','EQUIPO', 'ÁREA', 'ESTATUS']],
-                    data = df.to_dict('records'),
+                    columns = [{"name": col, "id": col} for col in df1.columns if col in ['FECHA','EQUIPO', 'ÁREA', 'ESTATUS']],
+                    data = df1.to_dict('records'),
                     filter_action = "native",  # Agrega barra de búsqueda
                     page_action = 'none',
                     filter_query = "{ESTATUS} != REALIZADO",
@@ -177,7 +177,7 @@ def actualizar_grafico(filtro_equipo, filtro_tecnico, filtro_area):
     return (eficiencia_mtto.actualizar_graficos(filtro_equipo, filtro_tecnico, filtro_area),)
 
 if __name__ == "__main__":
-	mantenimiento_dash.run(debug=True, port='1111')
+	mantenimiento_dash.run(debug=False, port='1111')
 
 
 

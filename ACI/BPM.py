@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 from dash import Dash, dcc, html, Input, Output
 import warnings
 warnings.filterwarnings('ignore')
-from ACI.load_aci import bpm_operativo_df, bpm_personales_df
+from .load_aci import bpm_operativo_df, bpm_personales_df
 
 def bpmoperativas(filtro_area, start_date, end_date):
     filtro_fecha_inicio = pd.to_datetime(start_date) if start_date else bpm_operativo_df.index.min()

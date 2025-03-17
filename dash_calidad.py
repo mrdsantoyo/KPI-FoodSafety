@@ -1,9 +1,11 @@
 import pandas as pd
 from dash import Dash, dcc, html, Input, Output
+import plotly.graph_objects as go
 import styles
 from ACI.load_aci import bpm_operativo_df, bpm_personales_df
 from ACI.BPM import bpmoperativas, bpmpersonales, filtro_area
 from ACI.mb_indicadores import actualizar_grafico_indicadores, filtro
+from ACI.porc_liberaciones import actualizar_grafico_liberaciones
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -18,38 +20,47 @@ start_date = start_date.strftime('%Y-%m-%d') if pd.notna(start_date) else '2023-
 end_date = end_date.strftime('%Y-%m-%d') if pd.notna(end_date) else pd.Timestamp.today().strftime('%Y-%m-%d')
 
 calidad_dash = Dash(__name__)
-
 calidad_dash.layout = html.Div(
     children=[
-        html.Header(id='header',
+        # ──────────────────────────────
+        # 1) Encabezado
+        # ──────────────────────────────
+        html.Header(
+            id='header',
             children=[
-                html.Img(id='Dilusa logo',
-                    src="/assets/Dilusa byn.png",
-                    alt="Dilusa Logo",
+                html.Img(
+                    id='Dilusa logo',
+                    src="/assets/Logo byn.png",
+                    alt="Logo",
                     style={
                         'height': '100px',
-                        'backgroundColor' : '#2b2b2b',
-                        }
-                    ),
-                html.H1(id='header1', 
-                    children="KPI's Aseguramiento de Calidad e Inocuidad", 
-                    className='', 
-                    style = {
-                        'alignItems':'center',
+                        'backgroundColor': '#2b2b2b',
+                    }
+                ),
+                html.H1(
+                    id='header1',
+                    children="KPI's Aseguramiento de Calidad e Inocuidad",
+                    className='',
+                    style={
+                        'alignItems': 'center',
                         "justifyContent": "space-around",
-                        'display':'flex',
-                        'color':'white',
+                        'display': 'flex',
+                        'color': 'white',
                         **styles.GRL
-                        }
-                    )
-                ],
+                    }
+                )
+            ],
             style={
                 'backgroundColor': '#2b2b2b',
-                'height':'110px',
-                'display':'flex',
+                'height': '110px',
+                'display': 'flex',
                 "alignItems": "center",
             }
-            ),
+        ),
+
+        # ──────────────────────────────
+        # 2) Filtros
+        # ──────────────────────────────
         html.Div(id='filtros',
             children=[
                 dcc.Dropdown(id='filtro_area',
@@ -72,69 +83,106 @@ calidad_dash.layout = html.Div(
                     display_format='DD/MM/YYYY',
                     min_date_allowed='2023-01-01',
                     style=styles.DROPDOWN_100
-                    )
-                ]
-            ),
-        html.Div(id='indicadores_mb',
+                )
+            ]
+        ),
+
+        # ──────────────────────────────
+        # 3) Primera fila (coliformes)
+        # ──────────────────────────────
+        html.Div(
+            children=[
+                dcc.Graph(
+                    id='coliformes_10',
+                    style={
+                        'width': '50%',
+                        'height': '300px',
+                        **styles.GRL
+                    }
+                ),
+                dcc.Graph(
+                    id='coliformes_5',
+                    style={
+                        'width': '50%',
+                        'height': '300px',
+                        **styles.GRL
+                    }
+                ),
+            ],
+            style={
+                'display': 'flex',
+                'flexDirection': 'row',
+                'flexWrap': 'wrap',
+                **styles.GRL
+            }
+        ),
+
+        # ──────────────────────────────
+        # 4) Segunda fila (mesofílicos y liberaciones)
+        # ──────────────────────────────
+        html.Div(
             children=[
                 dcc.Graph(id='mesofilicos',
                     style={
                         'width': '50%',
-                        'height': '300px',  
+                        'height': '300px',
                         **styles.GRL
                     }
                 ),
-                dcc.Graph(id='coliformes_10',
+                dcc.Graph(id='porc_liberaciones',
                     style={
                         'width': '50%',
-                        'height': '300px',  
+                        'height': '300px',
                         **styles.GRL
                     }
                 ),
-                dcc.Graph(id='coliformes_5',
+            ],
+            style={
+                'display': 'flex',
+                'flexDirection': 'row',
+                'flexWrap': 'wrap',
+                **styles.GRL
+            }
+        ),
+
+        # ──────────────────────────────
+        # 5) Tercera fila (BPM operativas y personales)
+        # ──────────────────────────────
+        html.Div(id='bpms',
+            children=[
+                dcc.Graph(id='operativas_graf',
                     style={
                         'width': '50%',
-                        'height': '300px',  
+                        'height': '300px',
+                        **styles.GRL
+                    }
+                ),
+                dcc.Graph(id='personales_graf',
+                    style={
+                        'width': '50%',
+                        'height': '300px',
                         **styles.GRL
                     }
                 )
             ],
             style={
                 'display': 'flex',
-                "flexDirection": "column",
-                "alignItems": "left",
-                "flexWrap": "wrap",
+                'flexDirection': 'row',
+                'flexWrap': 'wrap',
                 **styles.GRL
             }
-        ),
-        html.Div(id='bpms',
-            children=[
-                dcc.Graph(id='operativas_graf',
-                    style={
-                        'width': '50%',
-                        'height': '300px',  
-                        **styles.GRL
-                        }
-                    ),
-                dcc.Graph(id='personales_graf',
-                    style={
-                        'width': '50%',
-                        'height': '300px',  
-                        **styles.GRL
-                        }
-                    )
-                ],
-            style={
-                'display': 'flex',
-                "flexDirection": "row",
-                "alignItems": "center",
-                "flexWrap": "wrap",
-                **styles.GRL
-                }
-            )
-        ],
-        style=styles.GRL
+        )
+    ],
+    style=styles.GRL
 )
+
+@calidad_dash.callback(
+    Output('porc_liberaciones', 'figure'),
+    Input('filtro_producto', 'value')
+)
+def liberados(filtro_producto):
+    liberaciones = actualizar_grafico_liberaciones(filtro_producto)
+    return liberaciones
 
 @calidad_dash.callback(
     [
@@ -173,5 +221,4 @@ def actualizar_graficos1(filtro_producto):
     return fig_mesofilicos, fig_coliformes_10, fig_coliformes_5
 
 if __name__ == '__main__':
-    calidad_dash.run(debug=True, port='1111')
-
+    calidad_dash.run(debug=False, port='1112')
