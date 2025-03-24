@@ -65,16 +65,16 @@ http://127.0.0.1:1112 #Para el Dashboard de Aseguramiento de Calidad
 - [ ] Dashboard SGIA (en desarrollo)
 
 7. **Visualización del Dashboard**
-![image](https://github.com/user-attachments/assets/a0952f46-e962-4425-ae5d-673b4f3ad612)
 
-![image](https://github.com/user-attachments/assets/9679ca03-0c3d-4e9a-a505-1e1ef51bba79)
+![Dashboard mantenimiento](https://drive.google.com/uc?export=view&id=195cHAswBmxNXgAB0FwbcsXkBlXWbyGfY)
 
-![image](https://github.com/user-attachments/assets/7ab2f367-4d71-42f8-a44d-1e455d8cf9a7)
+![Dashboard mantenimiento 0](https://drive.google.com/uc?export=view&id=1F5gm9SFGqt4aDOvxRBmjBhMGkGlrvK33)
 
-![image](https://github.com/user-attachments/assets/7fb0dcf3-5e2d-423c-9a98-ab015ecf59fb)
+![Dasboard mantenimiento 1](https://drive.google.com/uc?export=view&id=1C4Oc7Wi6tr4Htgte1B6DcbaCFpl-6KJL)
 
-![2025-03-17](https://github.com/user-attachments/assets/7a821552-1b2d-4a68-957b-cc6dfd3c9ac7)
+![Dashboard ACI](https://drive.google.com/uc?export=view&id=1SXdj0kxvZitSCu6T8VxdHK-bU2F0TEVl)
 
+![Dasboard ACI 1](https://drive.google.com/uc?export=view&id=1jWAmZz-z4x8tPiiXpUIbxWNpr1xMmVxX)
 
 ## Uso y confidencialidad de datos
 Los archivos fuente en formato Excel (.xlsx) utilizados para la generación de los dashboards y análisis presentados en este proyecto son propiedad intelectual de la organización y no están incluidos en este repositorio debido a temas de confidencialidad y privacidad. Dichos archivos son utilizados únicamente con fines ilustrativos y demostrativos del funcionamiento del código.
