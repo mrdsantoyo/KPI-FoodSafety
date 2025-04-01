@@ -2,7 +2,7 @@ import pandas as pd
 from dash import Dash, html, dcc, Input, Output
 import plotly.graph_objects as go
 import warnings
-from load_aci import dfs
+from ACI.load_aci import dfs
 
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=FutureWarning)
@@ -72,7 +72,7 @@ def actualizar_grafico_liberaciones(filtro_producto):
                 textinfo='label+percent',
                 insidetextorientation='radial',
                 pull=0.05,
-                hoverinfo='label+value')
+                hoverinfo='label+percent')
             ]
         )
 

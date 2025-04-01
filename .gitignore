@@ -1,5 +1,4 @@
 __pycache__/
-# Img/
 venv/
 Excel/
 **/*.pyc
@@ -7,4 +6,5 @@ Excel/
 *.xlsx
 *.xlsm
 *.ipynb
-*.txt
+.\assets\Dilusa Logo byn.png
+.gitignore

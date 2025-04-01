@@ -22,23 +22,17 @@ end_date = end_date.strftime('%Y-%m-%d') if pd.notna(end_date) else pd.Timestamp
 calidad_dash = Dash(__name__)
 calidad_dash.layout = html.Div(
     children=[
-        # ──────────────────────────────
-        # 1) Encabezado
-        # ──────────────────────────────
-        html.Header(
-            id='header',
+        html.Header(id='header',
             children=[
-                html.Img(
-                    id='Dilusa logo',
-                    src="/assets/Logo byn.png",
+                html.Img(id='Dilusa logo',
+                    src="/assets/Dilusa Logo byn.png",
                     alt="Logo",
                     style={
                         'height': '100px',
                         'backgroundColor': '#2b2b2b',
                     }
                 ),
-                html.H1(
-                    id='header1',
+                html.H2(id='header1',
                     children="KPI's Aseguramiento de Calidad e Inocuidad",
                     className='',
                     style={
@@ -55,12 +49,8 @@ calidad_dash.layout = html.Div(
                 'height': '110px',
                 'display': 'flex',
                 "alignItems": "center",
-            }
-        ),
-
-        # ──────────────────────────────
-        # 2) Filtros
-        # ──────────────────────────────
+                }
+            ),
         html.Div(id='filtros',
             children=[
                 dcc.Dropdown(id='filtro_area',
@@ -86,22 +76,16 @@ calidad_dash.layout = html.Div(
                 )
             ]
         ),
-
-        # ──────────────────────────────
-        # 3) Primera fila (coliformes)
-        # ──────────────────────────────
-        html.Div(
+        html.Div(id='coliformes57coliformes10',
             children=[
-                dcc.Graph(
-                    id='coliformes_10',
+                dcc.Graph(id='coliformes_10',
                     style={
                         'width': '50%',
                         'height': '300px',
                         **styles.GRL
                     }
                 ),
-                dcc.Graph(
-                    id='coliformes_5',
+                dcc.Graph(id='coliformes_5',
                     style={
                         'width': '50%',
                         'height': '300px',
@@ -116,11 +100,7 @@ calidad_dash.layout = html.Div(
                 **styles.GRL
             }
         ),
-
-        # ──────────────────────────────
-        # 4) Segunda fila (mesofílicos y liberaciones)
-        # ──────────────────────────────
-        html.Div(
+        html.Div(id='mesofilicos/porc_liberaciones',
             children=[
                 dcc.Graph(id='mesofilicos',
                     style={
@@ -144,10 +124,6 @@ calidad_dash.layout = html.Div(
                 **styles.GRL
             }
         ),
-
-        # ──────────────────────────────
-        # 5) Tercera fila (BPM operativas y personales)
-        # ──────────────────────────────
         html.Div(id='bpms',
             children=[
                 dcc.Graph(id='operativas_graf',
@@ -171,7 +147,7 @@ calidad_dash.layout = html.Div(
                 'flexWrap': 'wrap',
                 **styles.GRL
             }
-        )
+        ),
     ],
     style=styles.GRL
 )
@@ -220,5 +196,6 @@ def actualizar_graficos1(filtro_producto):
     fig_mesofilicos, fig_coliformes_10, fig_coliformes_5 = actualizar_grafico_indicadores(filtro_producto)
     return fig_mesofilicos, fig_coliformes_10, fig_coliformes_5
 
-if __name__ == '__main__':
-    calidad_dash.run(debug=False, port='1112')
+
+if __name__ == "__main__":
+	calidad_dash.run(debug=False, port='1112')

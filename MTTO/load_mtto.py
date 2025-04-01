@@ -6,8 +6,11 @@ sheets = {
 }
 
 dfs = []
-workbook = r"C:/Users/daniel.santoyo/KPI-EDA/Excel/KPI'S.xlsx"
-# workbook = r"//192.168.10.2/Compartidos/Mantenimiento (192.168.10.254)/KPI'S.xlsx"
+dfs1 = []
+
+workbook = r"//192.168.10.2/Compartidos/Mantenimiento (192.168.10.254)/KPI'S.xlsx"
+workbook1 = r"//192.168.10.2/Compartidos/Mantenimiento (192.168.10.254)/EL CAPITAN RUBEN/KPI'S MANTENIMIENTO 2025.xlsx"
+
 for sheet_name, usecols in sheets.items():
     try:
         df_temp = pd.read_excel(
@@ -17,20 +20,62 @@ for sheet_name, usecols in sheets.items():
             header=0,
             keep_default_na=True
         )
+        print(f"{workbook} - {sheet_name}: shape={df_temp.shape}")
         dfs.append(df_temp)
     except Exception as e:
-        print(f"Error en hoja {sheet_name}: {e}")
-        continue
+        print(f"Error en hoja {sheet_name} del primer workbook: {e}")
 
-dfs = pd.concat(dfs, ignore_index=True)
-df = dfs.loc[:, ~dfs.columns.duplicated()]
+# Leer cada hoja del segundo workbook
+for sheet_name, usecols in sheets.items():
+    try:
+        df_temp1 = pd.read_excel(
+            io=workbook1,
+            sheet_name=sheet_name,
+            usecols=usecols,
+            header=0,
+            keep_default_na=True
+        )
+        print(f"{workbook1} - {sheet_name}: shape={df_temp1.shape}")
+        dfs1.append(df_temp1)
+    except Exception as e:
+        print(f"Error en hoja {sheet_name} del segundo workbook: {e}")
 
-# Limpia los nombres de columnas y elimina duplicados resultantes
+if dfs:
+    df_wb = pd.concat(dfs, ignore_index=True)
+else:
+    df_wb = pd.DataFrame()
+
+if dfs1:
+    df_wb1 = pd.concat(dfs1, ignore_index=True)
+else:
+    df_wb1 = pd.DataFrame()
+
+# # Antes de concatenar ambos, verifica la columna FECHA
+# print(df_wb.shape)
+# print(df_wb1.shape)
+
+# CONVERSIÓN DE FECHA
+# Ajusta el format a lo que realmente tengas en tus archivos.
+# Por ejemplo, si tus fechas se ven como "05/dic/2024", usa '%d/%b/%Y'
+# Si en alguno se ven de otra forma, deberás ajustarlo.
+df_wb['FECHA'] = pd.to_datetime(df_wb['FECHA'], errors='coerce', format='%d/%b/%Y')
+df_wb1['FECHA'] = pd.to_datetime(df_wb1['FECHA'], errors='coerce', format='%d/%b/%Y')
+
+df = pd.concat([df_wb, df_wb1], ignore_index=True)
+
+df = df.loc[:, ~df.columns.duplicated()]
 df.columns = df.columns.str.strip()
 df = df.loc[:, ~df.columns.duplicated()]
 
+df = df.sort_values(by='FECHA', ascending=False)
 df = df.dropna(subset=['FECHA'])
-df = df.sort_values(by=['FECHA'], ascending=False)
+
+# print("Final DF shape:", df.shape)
+# print(df.head(20))
+
+df['FECHA'] = pd.to_datetime(df['FECHA'], errors='coerce', format='%d/%b/%Y')#.astype(str)
+# df=df.sort_values(by='FECHA', ascending=False)
+# df['FECHA1'] = df['FECHA'].dt.strftime('%d/%m/%Y')
 
 def convertir_timedelta(val):
     try:
@@ -46,7 +91,7 @@ df['TIEMPO'] = df['TIEMPO_RAW'].apply(
     lambda x: f"{int(x.total_seconds() // 3600):02}:{int((x.total_seconds() % 3600) // 60):02}"
 )
 
-df['FECHA'] = pd.to_datetime(df['FECHA'], errors='coerce').dt.strftime('%d/%m/%Y')
+df['FECHA'] = pd.to_datetime(df['FECHA'], errors='coerce')
 
 df.rename(
     columns={
@@ -59,4 +104,8 @@ df.rename(
 df['ESTATUS'] = df['ESTATUS'].replace('FS', 'FUERA DE SERVICIO')
 df = df.map(lambda x: x.strip() if isinstance(x, str) else x)
 
+df = df.sort_values(by='FECHA', ascending=False)
 
+
+
+# return df

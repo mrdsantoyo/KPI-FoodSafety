@@ -3,6 +3,7 @@ import plotly.graph_objects as go
 from dash import Dash, html, dcc, Input, Output, dash_table
 from MTTO import eficiencia_mtto, porc_mtto
 from MTTO.porc_mtto import df1
+from MTTO.load_mtto import df
 import warnings
 warnings.filterwarnings('ignore')
 import sys
@@ -10,21 +11,26 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import styles
 
-mantenimiento_dash = Dash()
+
+df['FECHA'] = pd.to_datetime(df['FECHA'], errors='coerce', format='%d/%b/%Y')#.astype(str)
+df=df.sort_values(by='FECHA', ascending=False)
+df['FECHA'] = df['FECHA'].dt.strftime('%d/%m/%Y')
+
+mantenimiento_dash = Dash(__name__)
 mantenimiento_dash.layout = html.Div(
     children=[
         html.Header(id='header', 
             className='', 
             children=[
                 html.Img(id='Logo',
-                    src="/assets/Logo byn.png",
+                    src="/assets/Dilusa Logo byn.png",
                     alt="Logo",
                     style={
                         'height': '100px',
                         'backgroundColor' : '#2b2b2b',
                         }
                     ),
-                html.H1(id='header1', 
+                html.H2(id='header1', 
                     children="KPI's Mantenimiento", 
                     className='', 
                     style = {
@@ -64,7 +70,7 @@ mantenimiento_dash.layout = html.Div(
                 ),
                 dcc.Dropdown(id='filtro_area', 
                     className='',
-                    options = [{'label': x.upper(), 'value': x.upper()} for x in df1['ÁREA'].dropna().unique()],
+                    options = [{'label': x.upper(), 'value': x.upper()} for x in df1['AREA'].dropna().unique()],
                     value='',
                     multi=True,
                     placeholder='Selecciona un área.',
@@ -82,8 +88,8 @@ mantenimiento_dash.layout = html.Div(
                     style = styles.GRAF_500x500
                 ),
                 dash_table.DataTable(id='tabla-mttos',
-                    columns = [{"name": col, "id": col} for col in df1.columns if col in ['FECHA','EQUIPO', 'ÁREA', 'ESTATUS']],
-                    data = df1.to_dict('records'),
+                    columns = [{"name": col, "id": col} for col in df.columns if col in ['FECHA','EQUIPO', 'ÁREA', 'ESTATUS']],
+                    data = df.to_dict('records'),
                     filter_action = "native",  # Agrega barra de búsqueda
                     page_action = 'none',
                     filter_query = "{ESTATUS} != REALIZADO",

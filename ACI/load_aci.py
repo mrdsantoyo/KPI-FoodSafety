@@ -6,7 +6,6 @@ warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=FutureWarning)
 
 ##### LIBERACIÓN de PT ######
-# Regresa DF "dfs"
 dfs = []
 sheets = {
     "CHICHARRÓN PRENSADO": "A,C:F,L:Q,S,T,X:AF",
@@ -22,8 +21,8 @@ sheets = {
 
 for sheet_name, cols in sheets.items():
     try:
-        workbook = pd.ExcelFile("Excel\\D-FTO-ACI-083 Bitácora de liberación de PT 2025.xlsx")
-        # workbook = pd.ExcelFile("//192.168.10.2/Compartidos/Calidad Compartida (192.168.10.254)/8. BITACORA DE LIBERACIÓN DE PT Y MP/D-FTO-ACI-083 Bitácora de liberación de PT 2025.xlsx")
+        # workbook = pd.ExcelFile("Excel\\D-FTO-ACI-083 Bitácora de liberación de PT 2025.xlsx")
+        workbook = pd.ExcelFile("//192.168.10.2/Compartidos/Calidad Compartida (192.168.10.254)/8. BITACORA DE LIBERACIÓN DE PT Y MP/D-FTO-ACI-083 Bitácora de liberación de PT 2025.xlsx")
         df = pd.read_excel(
             workbook,
             sheet_name=sheet_name,
@@ -53,9 +52,8 @@ sheets_bpm = {
 bpm_operativo_df = pd.DataFrame()
 for sheet, cols in sheets_bpm.items():
     try:
-        workbook_bpm = pd.ExcelFile(r"C:/Users/daniel.santoyo/KPI-EDA/Excel/Bitacora de BPM's 2025.xlsx")
-        # Si prefieres usar la ruta de red, descomenta la siguiente línea:
-        # workbook_bpm = pd.ExcelFile(r"//192.168.10.2/Compartidos/Calidad Compartida (192.168.10.254)/5. KPI´s calidad/2025/Bitacora de BPM's 2025.xlsx")
+        # workbook_bpm = pd.ExcelFile(r"C:/Users/daniel.santoyo/KPI-EDA/Excel/Bitacora de BPM's 2025.xlsx")
+        workbook_bpm = pd.ExcelFile(r"//192.168.10.2/Compartidos/Calidad Compartida (192.168.10.254)/5. KPI´s calidad/2025/Bitacora de BPM's 2025.xlsx")
         temp_df = pd.read_excel(
             workbook_bpm,
             sheet_name=sheet,
