@@ -1,4 +1,5 @@
 import pandas as pd
+import plotly.graph_objects as go
 from dash import Dash, dcc, dash_table, html, Input, Output
 from SGIA.tif import estatus_general, codigo_entrada
 from SGIA.load_sgia import load_tif
@@ -12,9 +13,9 @@ df = eficiencia_documental().reset_index()
 df.rename(columns={"index": "Departamento"}, inplace=True)
 df['Eficiencia'] = df['Eficiencia'].apply(lambda x: f"{x}%" if pd.notnull(x) else x)
 
-sgia_dash = Dash(__name__)
+# sgia_dash = Dash(__name__)
 
-sgia_dash.layout = html.Div(
+sgia_dash_layout = html.Div(
     children=[
         html.Header(id='header',
             children=[
@@ -46,14 +47,12 @@ sgia_dash.layout = html.Div(
         ),
         html.Div(id='filtros',
             children=[
-                dcc.Interval(
-                    id='intervalo',
+                dcc.Interval(id='intervalo',
                     interval=3600,
                     n_intervals=0,
                     disabled=True
                 ),
-                dcc.Dropdown(
-                    id='filtro_departamento',
+                dcc.Dropdown(id='filtro_departamento',
                     options=[{"label": str(depto).upper(), "value": str(depto).upper()} for depto in df_tif['Departamento'].unique()],
                     value=[],
                     placeholder='Selecciona un departamento',
@@ -71,6 +70,7 @@ sgia_dash.layout = html.Div(
         html.Div(id='graficos_cd',
             children=[
                 dcc.Graph(id='control_documental',
+                    figure=go.Figure(),  
                     style={
                         'width': '70%', 
                         'height': '300px', 
@@ -122,6 +122,7 @@ sgia_dash.layout = html.Div(
         html.Div(id='graficos_tif',
             children=[
                 dcc.Graph(id='tif_pie',
+                    figure=go.Figure(),
                     style={
                         'width': '30%', 
                         'height': '300px', 
@@ -130,6 +131,7 @@ sgia_dash.layout = html.Div(
                         }
                 ),
                 dcc.Graph(id='codigo_entrada',
+                    figure=go.Figure(),
                     style={
                         'width': '70%', 
                         'height': '300px', 
@@ -148,6 +150,7 @@ sgia_dash.layout = html.Div(
         html.Div(id='acciones_correctivas',
             children=[
                 dcc.Graph(id='estatus_grl',
+                    figure=go.Figure(),
                     style={
                         'width': '30%', 
                         'height': '300px',
@@ -155,7 +158,8 @@ sgia_dash.layout = html.Div(
                         **styles.GRL
                         }
                 ),
-                dcc.Graph(id='eficiencia',
+                dcc.Graph(id='eficiencia1',
+                    figure=go.Figure(),
                     style={
                         'width': '35%', 
                         'height': '300px', 
@@ -164,6 +168,7 @@ sgia_dash.layout = html.Div(
                         }
                 ),
                 dcc.Graph(id='requisito_tipo',
+                    figure=go.Figure(),
                     style={
                         'width': '35%', 
                         'height': '300px', 
@@ -214,35 +219,35 @@ sgia_dash.layout = html.Div(
     ]
 )
 
-@sgia_dash.callback(
-    [
-        Output('control_documental', 'figure'),
-        # Output('eficiencia_documental', 'data'),   # <-- si quisieras actualizar data
-        Output('tif_pie', 'figure'),
-        Output('codigo_entrada', 'figure'),
-        Output('eficiencia', 'figure'),
-        Output('requisito_tipo', 'figure'),
-        Output('estatus_grl', 'figure'),
-        # Output('acciones_atrasadas', 'data'),    # <-- idem, si quisieras
-    ],
-    [
-        Input('intervalo', 'n_intervals'),
-        Input('filtro_departamento', 'value')
-    ]
-)
-def update_all(n_intervals, filtro_departamento):
-    docs = control_documental()
-    tif_fig = estatus_general(filtro_departamento)
-    ce = codigo_entrada()
-    efi = eficiencia(filtro_departamento)
-    req_tipo = requisito_tipo()
-    estatus_fig = estatus_grl()
-    data_efic_doc = df3.to_dict('records')
+# @sgia_dash.callback(
+#     [
+#         Output('control_documental', 'figure'),
+#         # Output('eficiencia_documental', 'data'),   # <-- si quisieras actualizar data
+#         Output('tif_pie', 'figure'),
+#         Output('codigo_entrada', 'figure'),
+#         Output('eficiencia', 'figure'),
+#         Output('requisito_tipo', 'figure'),
+#         Output('estatus_grl', 'figure'),
+#         # Output('acciones_atrasadas', 'data'),    # <-- idem, si quisieras
+#     ],
+#     [
+#         Input('intervalo', 'n_intervals'),
+#         Input('filtro_departamento', 'value')
+#     ]
+# )
+# def update_all(n_intervals, filtro_departamento):
+#     docs = control_documental()
+#     tif_fig = estatus_general(filtro_departamento)
+#     ce = codigo_entrada()
+#     efi = eficiencia(filtro_departamento)
+#     req_tipo = requisito_tipo()
+#     estatus_fig = estatus_grl()
+#     data_efic_doc = df3.to_dict('records')
 
-    return docs, tif_fig, ce, efi, req_tipo, estatus_fig#, data_efic_doc
+#     return docs, tif_fig, ce, efi, req_tipo, estatus_fig#, data_efic_doc
 
-if __name__ == '__main__':
-    sgia_dash.run(debug=True, port='1113')
+# if __name__ == '__main__':
+#     sgia_dash.run(debug=False, port='1113')
 
 
 

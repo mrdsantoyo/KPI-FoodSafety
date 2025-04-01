@@ -7,7 +7,6 @@ sheets = {
 
 dfs = []
 dfs1 = []
-
 workbook = r"//192.168.10.2/Compartidos/Mantenimiento (192.168.10.254)/KPI'S.xlsx"
 workbook1 = r"//192.168.10.2/Compartidos/Mantenimiento (192.168.10.254)/EL CAPITAN RUBEN/KPI'S MANTENIMIENTO 2025.xlsx"
 

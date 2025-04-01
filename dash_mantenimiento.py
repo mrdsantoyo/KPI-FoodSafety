@@ -16,8 +16,7 @@ df['FECHA'] = pd.to_datetime(df['FECHA'], errors='coerce', format='%d/%b/%Y')#.a
 df=df.sort_values(by='FECHA', ascending=False)
 df['FECHA'] = df['FECHA'].dt.strftime('%d/%m/%Y')
 
-mantenimiento_dash = Dash(__name__)
-mantenimiento_dash.layout = html.Div(
+mantenimiento_dash_layout = html.Div(
     children=[
         html.Header(id='header', 
             className='', 
@@ -155,6 +154,9 @@ mantenimiento_dash.layout = html.Div(
         ],
     style=styles.GRL
     )
+
+
+mantenimiento_dash = Dash(__name__)
 
 @mantenimiento_dash.callback(
     [

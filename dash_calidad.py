@@ -19,12 +19,11 @@ end_date = pd.to_datetime(bpm_operativo_df.index.max(), errors='coerce')
 start_date = start_date.strftime('%Y-%m-%d') if pd.notna(start_date) else '2023-01-01'
 end_date = end_date.strftime('%Y-%m-%d') if pd.notna(end_date) else pd.Timestamp.today().strftime('%Y-%m-%d')
 
-calidad_dash = Dash(__name__)
-calidad_dash.layout = html.Div(
+calidad_dash_layout = html.Div(
     children=[
         html.Header(id='header',
             children=[
-                html.Img(id='Dilusa logo',
+                html.Img(id='Logo',
                     src="/assets/Dilusa Logo byn.png",
                     alt="Logo",
                     style={
@@ -151,6 +150,9 @@ calidad_dash.layout = html.Div(
     ],
     style=styles.GRL
 )
+
+
+calidad_dash = Dash(__name__)
 
 @calidad_dash.callback(
     Output('porc_liberaciones', 'figure'),

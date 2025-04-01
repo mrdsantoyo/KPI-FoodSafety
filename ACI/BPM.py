@@ -35,7 +35,8 @@ def bpmoperativas(filtro_area, start_date, end_date):
         title='BPM Operacionales',
         xaxis_title='Fecha',
         yaxis_title='Calificación (%)',
-        template='plotly_dark'
+        template='plotly_dark',
+        showlegend=False,
     )
     return operativas_graf
 
